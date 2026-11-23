@@ -112,6 +112,12 @@ pub static RULES: &[Rule] = &[
         "A live Stripe secret key is written in the file."
     ),
     secret!(
+        "secret.npm-token",
+        Critical,
+        r"\bnpm_[A-Za-z0-9]{36}\b",
+        "An npm access token is written in the file."
+    ),
+    secret!(
         "secret.anthropic-key",
         Critical,
         r"\bsk-ant-[A-Za-z0-9_\-]{32,}",

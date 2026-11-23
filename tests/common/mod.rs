@@ -22,6 +22,7 @@ pub fn fake(name: &str) -> String {
         ]
         .concat(),
         "stripe-live" => ["sk", "_live_", &body(24, MIXED)].concat(),
+        "npm" => ["np", "m_", &body(36, MIXED)].concat(),
         "stripe-test" => ["sk", "_test_", &body(24, MIXED)].concat(),
         "anthropic" => ["sk-", "ant-api03-", &body(40, MIXED)].concat(),
         "openai" => ["sk-", "proj-", &body(48, MIXED)].concat(),
