@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Secrets: `secret.url-credentials` skips a connection string whose password is an angle-bracket placeholder
+  such as `mongodb+srv://<username>:<password>@host/db`, the form MongoDB Atlas shows in its docs.
 - Dependencies: `pnpm-lock.yaml` is read again. A blank line ended the `packages:` section, and
   pnpm writes one right after it, so every pnpm project reported 0 packages checked.
 
