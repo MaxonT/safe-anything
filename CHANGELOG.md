@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Secrets: new rule `secret.gitlab-token` (critical) for GitLab personal access tokens (`glpat-` followed by 20 characters).
 - Secrets: `secret.url-credentials` skips a connection string whose password is an angle-bracket placeholder
   such as `mongodb+srv://<username>:<password>@host/db`, the form MongoDB Atlas shows in its docs.
 - Dependencies: `pnpm-lock.yaml` is read again. A blank line ended the `packages:` section, and
