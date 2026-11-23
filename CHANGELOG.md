@@ -3,6 +3,10 @@
 ## Unreleased
 
 - Secrets: new rule `secret.npm-token` (critical) for npm access tokens (`npm_` followed by 36 letters or digits).
+- Dependencies: `uv.lock` entries whose `source` is `editable`, `virtual` or `path` (the project itself or a
+  local package) are no longer counted or looked up on PyPI.
+- Secrets: `secret.url-credentials` skips a connection string whose password is an angle-bracket placeholder
+  such as `mongodb+srv://<username>:<password>@host/db`, the form MongoDB Atlas shows in its docs.
 - Dependencies: `pnpm-lock.yaml` is read again. A blank line ended the `packages:` section, and
   pnpm writes one right after it, so every pnpm project reported 0 packages checked.
 

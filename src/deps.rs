@@ -146,7 +146,8 @@ fn toml_packages(file: &FileInfo, text: &str, eco: &str, need_source: bool) -> V
     let mut i = 0;
     while i < lines.len() {
         if lines[i].trim() == "[[package]]" {
-            let (mut name, mut version, mut vline, mut source) = (None, None, 0, false);
+            let (mut name, mut version, mut vline, mut source, mut local) =
+                (None, None, 0, false, false);
             let mut j = i + 1;
             while j < lines.len() && !lines[j].trim_start().starts_with('[') {
                 let l = lines[j].trim();
@@ -157,11 +158,15 @@ fn toml_packages(file: &FileInfo, text: &str, eco: &str, need_source: bool) -> V
                     vline = j + 1;
                 } else if l.starts_with("source = ") {
                     source = l.contains("registry");
+                    local = ["editable =", "virtual =", "path ="]
+                        .iter()
+                        .any(|key| l.contains(key));
                 }
                 j += 1;
             }
             if let (Some(n), Some(v)) = (name, version)
                 && (source || !need_source)
+                && !local
             {
                 out.push(pkg(eco, &n, &v, file, vline));
             }
