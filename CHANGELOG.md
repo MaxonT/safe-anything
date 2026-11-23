@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Dependencies: `uv.lock` entries whose `source` is `editable`, `virtual` or `path` (the project itself or a
+  local package) are no longer counted or looked up on PyPI.
 - Dependencies: `pnpm-lock.yaml` is read again. A blank line ended the `packages:` section, and
   pnpm writes one right after it, so every pnpm project reported 0 packages checked.
 
