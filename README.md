@@ -189,6 +189,8 @@ these 72 problems were found, not that the code is safe. [Design notes](docs/adr
   Your support keeps development going.
 </p>
 
+<p align="center"><sub>Your safety comes first: sponsors get a logo and a link here, nothing more. No paid recommendations and no setup guides for third-party AI API resellers, so nothing here steers your code, keys or data somewhere you didn't choose.</sub></p>
+
 <p align="center">
   <a href="https://coderabbit.link/erkamyaman">
     <picture>

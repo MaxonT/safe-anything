@@ -154,7 +154,7 @@ pub static RULES: &[Rule] = &[
         files: any_text,
         pattern: r#"\b[a-z][a-z0-9+.\-]*://[^\s:/@"'`]+:[^\s@/"'`$]{4,}@[^\s"'`]+"#,
         unless: Some(
-            r"(?i)localhost|127\.0\.0\.1|0\.0\.0\.0|example\.(com|org)|:password@|:pass@|\$\{|\buser(?:name)?:(?:token|pass(?:word)?|secret|pat)@|:\*+@",
+            r"(?i)localhost|127\.0\.0\.1|0\.0\.0\.0|example\.(com|org)|:password@|:pass@|:<[^>@]*>@|\$\{|\buser(?:name)?:(?:token|pass(?:word)?|secret|pat)@|:\*+@",
         ),
         message: "A connection string carries a username and password.",
         fix: ROTATE,
