@@ -4,6 +4,10 @@
 
 - Report: the summary line says `Scanned 1 file` and `1 package checked against OSV.dev` for a
   count of one; other counts stay plural.
+- Code: the JavaScript and Python patterns in `code.sql-injection` now also match escaped
+  newlines, tabs and carriage returns (`\n`, `\t`, `\r`) inside quoted query strings
+  (`db.query("SELECT id\nFROM users WHERE id = " + id)`,
+  `cur.execute("SELECT id\nFROM users WHERE id = %s" % uid)`).
 - Code: the Go `fmt.Sprintf` pattern in `code.sql-injection` now uses the same SQL clause keyword
   check (`SELECT ... FROM`, `INSERT INTO`, `UPDATE ... SET`, `DELETE FROM`) as the other SQL
   injection rules and also matches raw backtick query strings and escaped newlines or tabs
@@ -19,8 +23,9 @@
   followed by 48 letters and digits).
 - Secrets: new rule `secret.dockerhub-token` (critical) for Docker Hub personal access tokens
   (`dckr_pat_` followed by 27 letters, digits, `_` or `-`).
-- Secrets: new rule `secret.age-key` (critical) for age private keys (`AGE-SECRET-KEY-1` followed by
-  58 upper-case Bech32 characters), which decrypt every file encrypted to them, SOPS files included.
+- Secrets: new rule `secret.age-key` (critical) for age private keys (`AGE-SECRET-KEY-1` and
+  post-quantum `AGE-SECRET-KEY-PQ-1` followed by 58 upper-case Bech32 characters), which decrypt
+  every file encrypted to them, SOPS files included.
 - Secrets: when a line holds more than one secret or more than one finding, all secrets on that
   line are now masked in every finding on it (two tokens of one kind, tokens of different kinds, a
   token beside a `NEXT_PUBLIC_` or `VITE_` secret, another rule's finding on the same line such as
