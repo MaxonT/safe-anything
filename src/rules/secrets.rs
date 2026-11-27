@@ -447,7 +447,7 @@ pub static RULES: &[Rule] = &[
         Critical,
         // In a JSON string the key can follow an escape like `\n`, where `\b` fails
         // between `n` and `A`.
-        r"(?:\\[nrt]|\b)(AGE-SECRET-KEY-1[QPZRY9X8GF2TVDW0S3JN54KHCE6MUA7L]{58})\b",
+        r"(?:\\[nrt]|\b)(AGE-SECRET-KEY-(?:PQ-)?1[QPZRY9X8GF2TVDW0S3JN54KHCE6MUA7L]{58})\b",
         "An age private key is written in the file."
     ),
     secret!(
@@ -738,34 +738,35 @@ mod tests {
 
     #[test]
     fn age_key_after_json_escape() {
-        let key = [
-            "AGE-SECRET-",
-            "KEY-1",
-            &"QPZRY9X8GF2TVDW0S3JN54KHCE6MUA7L".repeat(2)[..58],
-        ]
-        .concat();
+        let bech32 = &"QPZRY9X8GF2TVDW0S3JN54KHCE6MUA7L".repeat(2)[..58];
+        let classic = ["AGE-SECRET-", "KEY-1", bech32].concat();
+        let pq = ["AGE-SECRET-", "KEY-PQ-1", bech32].concat();
         let age = |src: &str| -> Vec<_> {
             check(&FileInfo::new("keys.json"), src, false)
                 .into_iter()
                 .filter(|f| f.rule == "secret.age-key")
                 .collect()
         };
-        for src in [
-            format!(r#"{{"key":"line\n{key}"}}"#),
-            format!(r#"{{"key":"line\r\n{key}\n"}}"#),
-            format!(r#"{{"key":"\t{key}"}}"#),
-            format!("key = \"{key}\""),
-        ] {
-            let found = age(&src);
-            assert_eq!(found.len(), 1, "{src} => {found:#?}");
-            assert!(!found[0].snippet.contains(&key), "{src} => {found:#?}");
+        for key in [&classic, &pq] {
+            for src in [
+                format!(r#"{{"key":"line\n{key}"}}"#),
+                format!(r#"{{"key":"line\r\n{key}\n"}}"#),
+                format!(r#"{{"key":"\t{key}"}}"#),
+                format!("key = \"{key}\""),
+            ] {
+                let found = age(&src);
+                assert_eq!(found.len(), 1, "{src} => {found:#?}");
+                assert!(!found[0].snippet.contains(key), "{src} => {found:#?}");
+            }
+            for src in [
+                format!("X{key}"),
+                format!("{key}Q"),
+                format!(r#""line\n{key}Q""#),
+            ] {
+                assert!(age(&src).is_empty(), "{src}");
+            }
         }
-        for src in [
-            format!("X{key}"),
-            format!("{key}Q"),
-            format!(r#""line\n{key}Q""#),
-        ] {
-            assert!(age(&src).is_empty(), "{src}");
-        }
+        let recipient = format!("recipient = \"age1pq1{}\"", bech32.to_lowercase());
+        assert!(age(&recipient).is_empty(), "{recipient}");
     }
 }
