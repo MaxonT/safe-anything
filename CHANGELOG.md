@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Report: the summary line says `Scanned 1 file` and `1 package checked against OSV.dev` for a
+  count of one; other counts stay plural.
 - Code: the Go `fmt.Sprintf` pattern in `code.sql-injection` now uses the same SQL clause keyword
   check (`SELECT ... FROM`, `INSERT INTO`, `UPDATE ... SET`, `DELETE FROM`) as the other SQL
   injection rules and also matches raw backtick query strings and escaped newlines or tabs
